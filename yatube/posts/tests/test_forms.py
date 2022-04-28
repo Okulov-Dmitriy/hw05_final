@@ -70,14 +70,12 @@ class PostFormsTests(TestCase):
                                                data=form_data,
                                                follow=True)
         new_post = Post.objects.order_by('pk').last()
-        error_name1 = 'Данные поста не совпадают'
         self.assertEqual(response.status_code, OK)
         self.assertFalse(Post.objects.filter(
-            text='Текст записанный в форму',
-            group=1,
-            author=self.user
-                        ).exists(), error_name1
-        )
+                         text='Текст записанный в форму',
+                         group=1,
+                         author=self.user
+                         ).exists())
         error_name2 = 'Поcт не добавлен в БД'
         self.assertEqual(Post.objects.count(),
                          posts_count,
