@@ -76,7 +76,7 @@ class PostFormsTests(TestCase):
             text='Текст записанный в форму',
             group=1,
             author=self.user
-            ).exists(), error_name1
+                        ).exists(), error_name1
         )
         error_name2 = 'Поcт не добавлен в БД'
         self.assertEqual(Post.objects.count(),
