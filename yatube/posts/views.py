@@ -88,9 +88,9 @@ def get_page_context(queryset, request):
 @login_required
 def post_create(request):
     form = PostForm(
-            request.POST,
-            files=request.FILES or None
-        )
+        request.POST,
+        files=request.FILES or None
+    )
     if request.method == "POST":
         # создаётся объект формы на основе класса PostForm
         # Если все данные формы валидны
@@ -111,10 +111,10 @@ def post_edit(request, post_id):
     is_edit = True
     post = get_object_or_404(Post, id=post_id, author=request.user)
     form = PostForm(
-            request.POST or None,
-            files=request.FILES or None,
-            instance=post
-        )
+        request.POST or None,
+        files=request.FILES or None,
+        instance=post
+    )
     if request.method == 'POST':
         if form.is_valid():
             post = form.save(commit=False)
