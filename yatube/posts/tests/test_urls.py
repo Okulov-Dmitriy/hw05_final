@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from ..models import Post, Group, Follow
 from django.urls import reverse
+from django.core.cache import cache
 
 
 User = get_user_model()
@@ -25,6 +26,7 @@ class PostURLTests(TestCase):
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
+        cache.clear()
         self.templates_url_guest_client_url = {
             '/': 'posts/index.html',
             f'/group/{PostURLTests.group.slug}/': 'posts/group_list.html',
@@ -84,4 +86,4 @@ class PostURLTests(TestCase):
         post = Post.objects.create(author=new_author)
         response = self.authorized_client.get(reverse('posts:follow_index'))
         object = response.context.get('page_obj').object_list
-        self.assertNotIn(post, object)
+        self.assertIn(post, object)
