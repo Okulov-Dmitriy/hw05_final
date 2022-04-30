@@ -59,7 +59,7 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    form = CommentForm(request.POST or None)
+    form = CommentForm()
     comments = post.comments.select_related('author')
     group = post.group
     author = post.author
@@ -117,8 +117,7 @@ def post_edit(request, post_id):
     )
     if request.method == 'POST':
         if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
+            post = form.save()
             return redirect('posts:post_detail', post_id=post_id)
     context = {
         'form': form,

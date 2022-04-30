@@ -1,8 +1,7 @@
 from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
-from ..models import Post, Group, Follow
-from django.urls import reverse
+from ..models import Post, Group
 from django.core.cache import cache
 
 
@@ -67,23 +66,3 @@ class PostURLTests(TestCase):
             with self.subTest(address=address):
                 response = self.authorized_client.get(address, follow=True)
                 self.assertTemplateUsed(response, template)
-
-    def test_follow_pages_available(self):
-        urls = [
-            reverse('posts:profile_follow',
-                    kwargs={'username': self.user}),
-            reverse('posts:profile_unfollow',
-                    kwargs={'username': self.user})
-        ]
-        for url in urls:
-            response = self.authorized_client.post(url)
-            with self.subTest(url=url):
-                self.assertEqual(response.status_code, HTTPStatus.FOUND)
-
-    def test_post_in_feed(self):
-        new_author = User.objects.create(username='new_author')
-        Follow.objects.create(user=self.user, author=new_author)
-        post = Post.objects.create(author=new_author)
-        response = self.authorized_client.get(reverse('posts:follow_index'))
-        object = response.context.get('page_obj').object_list
-        self.assertIn(post, object)
