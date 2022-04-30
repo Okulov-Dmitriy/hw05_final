@@ -86,7 +86,7 @@ class PostFormsTests(TestCase):
             response,
             'form',
             'image',
-            'Картинки нет'
+            'Отправленный файл пуст.'
         )
 
     def test_edit_post(self):
